@@ -14,7 +14,7 @@ def show_map(request):
           "properties": {
             "title": "Легенды Москвы",
             "placeId": "moscow_legends",
-            "detailsUrl": './places/moscow_legends.json'
+            "detailsUrl": 'https://raw.githubusercontent.com/devmanorg/where-to-go-frontend/master/places/moscow_legends.json'
           }
         },
         {
@@ -26,7 +26,7 @@ def show_map(request):
           "properties": {
             "title": "Крыши24.рф",
             "placeId": "roofs24",
-            "detailsUrl": './places/roofs24.json'
+            "detailsUrl": 'https://raw.githubusercontent.com/devmanorg/where-to-go-frontend/master/places/roofs24.json'
           }
         }
       ]
