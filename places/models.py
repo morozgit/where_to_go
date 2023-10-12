@@ -13,7 +13,7 @@ class Place(models.Model):
 
 
 class PlaceImage(models.Model):
-    image = models.ImageField(upload_to='images', verbose_name='Изображение')
+    image = models.ImageField(upload_to='media', verbose_name='Изображение')
     place = models.ForeignKey(Place,
                               related_name='images',
                               verbose_name='Место',
