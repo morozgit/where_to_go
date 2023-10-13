@@ -14,6 +14,7 @@ class Place(models.Model):
 
 class PlaceImage(models.Model):
     image = models.ImageField(verbose_name='Изображение')
+    position = models.IntegerField(default=0)
     place = models.ForeignKey(Place,
                               related_name='images',
                               verbose_name='Место',
