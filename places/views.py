@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from .models import Place
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, JsonResponse
-import os
-from django.conf import settings
+from django.http import JsonResponse
+from django.urls import reverse
+
 
 def show_map(request):
     places = Place.objects.all()
@@ -19,7 +19,7 @@ def show_map(request):
             "properties": {
               "title": place.title,
               "placeId": place.id,
-              "detailsUrl": 'https://raw.githubusercontent.com/devmanorg/where-to-go-frontend/master/places/moscow_legends.json'
+              "detailsUrl": reverse('place-image', args=[place.id])
             }
           }
         )

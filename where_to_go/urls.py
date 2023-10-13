@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.show_map),
-    path('places/<int:place_id>/', views.show_place)
+    path('places/<int:place_id>/', views.show_place, name='place-image')
 ]
 
 if settings.DEBUG:
