@@ -27,7 +27,6 @@ def show_map(request):
       "type": "FeatureCollection",
       "features": features
     }
-    print(places_geojson)
     context = {'geojson': places_geojson}
     return render(request, 'index.html', context=context)
 
