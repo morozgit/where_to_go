@@ -26,6 +26,7 @@ urlpatterns = [
     path('', views.show_map),
     path('places/<int:place_id>/', views.show_place, name='place-image'),
     path('tinymce/', include('tinymce.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
 ]
 
 if settings.DEBUG:

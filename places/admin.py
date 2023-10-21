@@ -5,12 +5,13 @@ from django.utils.html import format_html
 from .models import Place, PlaceImage
 
 
-class PlaceImageAdmin(SortableTabularInline, admin.TabularInline):
+class PlaceImageInline(SortableTabularInline, admin.TabularInline):
     model = PlaceImage
-    readonly_fields = ("place_image",)
+    readonly_fields = ('get_preview',)
+    autocomplete_fields = ['place']
 
-    def place_image(self, obj):
-        return format_html('<img src="{}" height=200 />', obj.image.url,)
+    def get_preview(self, image):
+        return format_html('<img src="{}" style="max-height: 200px; max-width: auto;" />', image.image.url,)
 
 
 
@@ -21,5 +22,5 @@ class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
         )
     search_fields = ['title']
     inlines = [
-        PlaceImageAdmin,
+        PlaceImageInline,
     ]

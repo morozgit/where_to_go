@@ -1,3 +1,4 @@
+import os
 from io import BytesIO
 
 import requests
@@ -22,28 +23,33 @@ class Command(BaseCommand):
 
         title = answer['title']
         images_url = answer['imgs']
-        description_short = answer['description_short']
-        description_long = answer['description_long']
+        short_description = answer['description_short']
+        long_description = answer['description_long']
         longitude = answer['coordinates']['lng']
         latitude = answer['coordinates']['lat']
 
         place, created = Place.objects.get_or_create(
             title=title,
-            description_short=description_short,
-            description_long=description_long,
             longitude=longitude,
             latitude=latitude,
+            defaults={
+                'short_description': short_description,
+                'long_description': long_description,
+            }
         )
-        count = 0
         for image_url in images_url:
-            count += 1
             response = requests.get(image_url)
             response.raise_for_status()
-            image_bin = Image.open(BytesIO(response.content))
-            image_bytes_io = BytesIO()
-            image_bin.save(image_bytes_io, format='JPEG')
-            image_bytes = image_bytes_io.getvalue()
-            content = ContentFile(image_bytes)
-            place_image = PlaceImage()
-            place_image.place_id = place.id
-            place_image.image.save(f'{title}{count}.jpg', content, save=True)
+            image_name = os.path.basename(image_url)
+            PlaceImage.objects.create(
+                place=place,
+                image=ContentFile(response.content, name=image_name)
+            )
+            # image_bin = Image.open(BytesIO(response.content))
+            # image_bytes_io = BytesIO()
+            # image_bin.save(image_bytes_io, format='JPEG')
+            # image_bytes = image_bytes_io.getvalue()
+            # content = ContentFile(image_bytes)
+            # place_image = PlaceImage()
+            # place_image.place_id = place.id
+            # place_image.image.save(f'{title}{image_num}.jpg', content, save=True)
