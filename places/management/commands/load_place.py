@@ -1,10 +1,8 @@
 import os
-from io import BytesIO
 
 import requests
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
-from PIL import Image
 
 from places.models import Place, PlaceImage
 
@@ -16,6 +14,16 @@ class Command(BaseCommand):
         parser.add_argument('data_url', type=str, help='Введите ссылку на данные')
 
     def handle(self, *args, **kwargs):
+
+        def upload_image(place, image_url):
+            response = requests.get(image_url)
+            response.raise_for_status()
+            image_name = os.path.basename(image_url)
+            PlaceImage.objects.create(
+                place=place,
+                image=ContentFile(response.content, name=image_name)
+            )
+
         url = kwargs['data_url']
         response = requests.get(url)
         response.raise_for_status()
@@ -38,18 +46,4 @@ class Command(BaseCommand):
             }
         )
         for image_url in images_url:
-            response = requests.get(image_url)
-            response.raise_for_status()
-            image_name = os.path.basename(image_url)
-            PlaceImage.objects.create(
-                place=place,
-                image=ContentFile(response.content, name=image_name)
-            )
-            # image_bin = Image.open(BytesIO(response.content))
-            # image_bytes_io = BytesIO()
-            # image_bin.save(image_bytes_io, format='JPEG')
-            # image_bytes = image_bytes_io.getvalue()
-            # content = ContentFile(image_bytes)
-            # place_image = PlaceImage()
-            # place_image.place_id = place.id
-            # place_image.image.save(f'{title}{image_num}.jpg', content, save=True)
+            upload_image(place, image_url)
