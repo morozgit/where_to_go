@@ -1,10 +1,10 @@
+from adminsortable2.admin import SortableAdminBase, SortableTabularInline
 from django.contrib import admin
-from .models import Place, PlaceImage
 from django.utils.html import format_html
-from adminsortable2.admin import SortableTabularInline, SortableAdminBase
+
+from .models import Place, PlaceImage
 
 
-# @admin.register(PlaceImage)
 class PlaceImageAdmin(SortableTabularInline, admin.TabularInline):
     model = PlaceImage
     readonly_fields = ("place_image",)

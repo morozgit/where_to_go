@@ -1,9 +1,12 @@
-from django.core.management.base import BaseCommand
-import requests
-from places.models import Place, PlaceImage
-from PIL import Image
 from io import BytesIO
+
+import requests
 from django.core.files.base import ContentFile
+from django.core.management.base import BaseCommand
+from PIL import Image
+
+from places.models import Place, PlaceImage
+
 
 class Command(BaseCommand):
     help = 'Загрузка данных из json'
@@ -31,8 +34,6 @@ class Command(BaseCommand):
             longitude=longitude,
             latitude=latitude,
         )
-        # p = PlaceImage.objects.get(id=10)
-        # p.delete()
         count = 0
         for image_url in images_url:
             count += 1
